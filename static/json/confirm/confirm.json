@@ -1,0 +1,20 @@
+{
+    "type": "template",
+    "altText": "this is a confirm template",
+    "template": {
+        "type": "confirm",
+        "text": "請問內容是否正確?",
+        "actions": [
+            {
+                "type": "message",
+                "label": "是",
+                "text": "是"
+            },
+            {
+                "type": "message",
+                "label": "否",
+                "text": "否"
+            }
+        ]
+    }
+}
