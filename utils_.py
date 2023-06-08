@@ -5,10 +5,16 @@
 '''
 from pathlib import Path
 import os
+import shutil
+from linebot.models import (ButtonsTemplate, TemplateSendMessage, PostbackTemplateAction, ImageSendMessage, QuickReply, QuickReplyButton, TextSendMessage, FlexSendMessage, TextMessage, LocationMessage, MessageEvent, ImageMessage, PostbackEvent)
+import configparser
 
 '''
 變數區
 '''
+config = configparser.ConfigParser()
+config.read('config.ini')
+end_point = config.get('line-bot', "end_point")
 file_path = Path(__file__).resolve().parent
 img_path = os.path.join(file_path, "static\imgs")
 
@@ -32,18 +38,22 @@ def save_img(img_id, img_content):
             f.write(chunk)
     return filename
 
-# def show_img():
-#     '''
-#     顯示模型標註圖片
-#     '''
-#     confirm_template = ConfirmTemplate(
-#                             text='請問結果是否正確?',
-#                             actions=[
-#                                 MessageAction(label='是', text='是'),
-#                                 MessageAction(label='否', text='否')
-#                             ]
-#                         )
-#     return confirm_template
+def show_predicted_img():
+    '''
+    顯示模型標註圖片
+    '''
+    predict_img_name = "image0.jpg"
+    original_img_folder = os.path.join(file_path, "runs/detect/exp")
+    original_img_path = os.path.join(original_img_folder, predict_img_name)
+    target_img_path = os.path.join(img_path, predict_img_name)
+    shutil.move(original_img_path, target_img_path)
+    
+    predict_img = ImageSendMessage(
+        original_content_url = f"{end_point}/static/imgs/{predict_img_name}",
+        preview_image_url = f"{end_point}/static/imgs/{predict_img_name}"
+    )
+    print(f'path : {end_point}/runs/detect/exp/image0.jpg')
+    return predict_img
 
 
 # def delete_img(self, img_path):
