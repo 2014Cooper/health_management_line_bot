@@ -6,9 +6,9 @@
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.models import (ButtonsTemplate, TemplateSendMessage, PostbackTemplateAction, ImageSendMessage, QuickReply, QuickReplyButton, TextSendMessage, FlexSendMessage, TextMessage, LocationMessage, MessageEvent, ImageMessage, PostbackEvent)
 import configparser
-from utils_ import save_img
+from utils_ import save_img,  show_predicted_img
 from predict import predict_food_content
-from line_templates import food_nutrition_fact
+from line_templates import food_nutrition_fact, confirm_template
 
 '''
 變數區
@@ -37,10 +37,15 @@ def handle_message(event):
         filename = save_img(img_id, img_content)
 
         predict_food_content(filename)
-        bubble = food_nutrition_fact()
-        
-        line_bot_api.reply_message(
-            event.reply_token,
-            FlexSendMessage("flex", bubble)
-            )
+
+        predict_img_ = show_predicted_img()
+        bubble = FlexSendMessage("flex", food_nutrition_fact())
+        confirm = confirm_template()
+
+        reply_arr = []
+        reply_arr.append(predict_img_)
+        reply_arr.append(bubble)
+        reply_arr.append(confirm)
+
+        line_bot_api.reply_message(event.reply_token, reply_arr)
 
