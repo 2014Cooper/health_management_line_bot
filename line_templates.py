@@ -10,12 +10,13 @@ from json import load
 from predict import predict_food_content
 import copy
 import re
+from linebot.models import (ButtonsTemplate, TemplateSendMessage, PostbackTemplateAction, ImageSendMessage, QuickReply, QuickReplyButton, TextSendMessage, FlexSendMessage, TextMessage, LocationMessage, MessageEvent, ImageMessage, PostbackEvent, ConfirmTemplate, MessageAction)
 
 '''
 變數區
 '''
 file_path = Path(__file__).resolve().parent
-bubblePath = os.path.join(file_path, "static/json/food_nutrition_fact")
+bubblePath = os.path.join(file_path, "static/json")
 
 '''
 定義
@@ -26,7 +27,7 @@ def food_nutrition_fact():
     param 
     '''
     bubble = load(
-        open(os.path.join(bubblePath, "food_nutrition_fact.json"), "r", encoding="utf-8")
+        open(os.path.join(bubblePath, "food_nutrition_fact/food_nutrition_fact.json"), "r", encoding="utf-8")
     )
 
     contents = json.load(
@@ -61,7 +62,21 @@ def food_nutrition_fact():
 
     return bubble
 
-# def confirm_template():
-#     confirm_template = load(
-#         open(os.path.join(bubblePath, "food_nutrition_fact.json"), "r", encoding="utf-8")
-#     )
+def confirm_template():
+    # confirm_template = load(
+    #     open(os.path.join(bubblePath, "confirm/confirm.json"), "r", encoding="utf-8")
+    # )
+    confirm_template = ConfirmTemplate(
+            text='請問分析結果是否正確？',
+            actions=[
+                MessageAction(label='是', text='Yes'),
+                MessageAction(label='否', text='No')
+            ]
+        )
+
+    confirm_template_message = TemplateSendMessage(
+        alt_text='確認訊息',
+        template=confirm_template
+    )
+
+    return confirm_template_message
