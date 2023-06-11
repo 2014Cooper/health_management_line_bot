@@ -22,7 +22,7 @@
 - `utils.py`：包含一些輔助函式。
 - `predict.py`： 載入模型進行預測。
 - `Static/`：包含靜態資源。
-- config.ini：包含 Line bot 必要參數。
+- `config.ini`：包含 Line bot 必要參數。
 
 
 
