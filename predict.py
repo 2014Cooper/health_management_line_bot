@@ -34,20 +34,8 @@ food_calorie_path = os.path.join(file_path, "static/json/food_calorie")
 def predict_food_content(filename):
     '''
     食物組成判斷
-    param img_path : 圖片本地路徑
-    return 食物組成以及熱量的json
-           - carrot_eggs
-           - chicken_nuggets
-           - chinese_cabbage
-           - chinese_sausage
-           - curry
-           - fried_chicken
-           - fried_dumplings
-           - fried_eggs
-           - mung_bean_sprouts
-           - rice
-           - triangle_hash_brown
-           - water_spinach
+    :param filename : 想要預測的圖片檔名
+    return 食物組成以及熱量，將所有資訊包成json格式
     '''
     # 讀取圖片
     img = cv2.imread(f"{file_path}\static\imgs\{filename}")
@@ -71,6 +59,7 @@ def predict_food_content(filename):
         info["fat"] = f"{(result_df['fat'][i])} kcals"
         content.append(info)
     contents = json.dumps(content)
+    # 將食物組成以及熱量資訊包成json
     with open(os.path.join(file_path, "static/json/predict_result/predict.json"), "w") as file:
         file.write(contents)
     # return contents
